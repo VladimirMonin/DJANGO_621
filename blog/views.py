@@ -38,6 +38,8 @@ POST_CONTEXT = {
         "secondary": "Тётя Варя",
     },
     "post": post,
+    "is_published": True,
+    "rating": 1,
 }
 
 
