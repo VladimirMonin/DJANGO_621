@@ -1,16 +1,40 @@
-<h1>{{ page_title }}</h1>
-{% comment %} {{posts}} {% endcomment %}
-{% comment %} {{posts.0}} {% endcomment %}
-{% comment %} {{posts.0.title}} {% endcomment %}
-
-{% for post in posts %}
-{% if forloop.first %}
-<hr>
-{% endif %}
-<h3>{{ forloop.counter }}. {{ post.title }}</h3>
-{% if forloop.last %}
-<hr>
-{% endif %}
-{% empty %}
-<p>Постов пока нет</p>
-{% endfor %}
+{% comment %} Загрузили статику {% endcomment %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    {% comment %} Я прокидываю путь до статики от папки статика в Django приложении (как и с шаблонами во VIEWS) {% endcomment %}
+    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">
+</head>
+<body>
+    <main class="container">
+    <nav class="nav"><a href="{% url 'post_list' %}">Публикации</a></nav>
+    <h1>{{ page_title }}</h1>
+    <ul class="tags">
+        {% for category in categories %}<li>{{ category.name }}</li>{% endfor %}
+    </ul>
+    <section id="posts" class="post-list">
+        {% for post in posts %}
+            <article class="post-card{% if post.rating == 3 %} post-card--featured{% endif %}">
+                {% comment %} 
+                Как считается путь к картинке?
+                static - мы начинаем с папки статики
+                потом путь к папке с картинками
+                а из переменной post.image мы получаем название файла картинки
+                {% endcomment %}
+                {% if post.image %}<img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}">{% else %}<p class="muted">Без иллюстрации</p>{% endif %}
+                <h2>{{ forloop.counter }}. {{ post.title }}</h2>
+                <p class="muted">{{ post.author }} · {{ post.category.name }}</p>
+                {% if post.description %}<p>{{ post.description }}</p>{% else %}<p class="muted">Описание пока не добавлено.</p>{% endif %}
+                <p>{% if post.rating == 3 %}Высокий рейтинг{% elif post.rating == 2 %}Есть интерес{% else %}Новая запись{% endif %}</p>
+            </article>
+        {% empty %}
+            <p>Публикаций пока нет.</p>
+        {% endfor %}
+    </section>
+</main>
+</body>
+</html>
