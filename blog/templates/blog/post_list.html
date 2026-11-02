@@ -1,0 +1,16 @@
+<h1>{{ page_title }}</h1>
+{% comment %} {{posts}} {% endcomment %}
+{% comment %} {{posts.0}} {% endcomment %}
+{% comment %} {{posts.0.title}} {% endcomment %}
+
+{% for post in posts %}
+{% if forloop.first %}
+<hr>
+{% endif %}
+<h3>{{ forloop.counter }}. {{ post.title }}</h3>
+{% if forloop.last %}
+<hr>
+{% endif %}
+{% empty %}
+<p>Постов пока нет</p>
+{% endfor %}
