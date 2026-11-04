@@ -1,0 +1,18 @@
+{% load static %}
+<article class="post-card{% if post.rating == 3 %} post-card--featured{% endif %}">
+                {% comment %} 
+                Как считается путь к картинке?
+                static - мы начинаем с папки статики
+                потом путь к папке с картинками
+                а из переменной post.image мы получаем название файла картинки
+                {% endcomment %}
+                {% if post.image %}
+                <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}">
+                {% else %}
+                <p class="muted">Без иллюстрации</p>
+                {% endif %}
+                <h2>{{ forloop.counter }}. {{ post.title }}</h2>
+                <p class="muted">{{ post.author }} · {{ post.category.name }}</p>
+                {% if post.description %}<p>{{ post.description }}</p>{% else %}<p class="muted">Описание пока не добавлено.</p>{% endif %}
+                <p>{% if post.rating == 3 %}Высокий рейтинг{% elif post.rating == 2 %}Есть интерес{% else %}Новая запись{% endif %}</p>
+            </article>
