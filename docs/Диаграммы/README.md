@@ -20,6 +20,41 @@
 | 02 | [Как CSS попадает на страницу](lesson_48_02_static.excalidraw) | `{% load static %}`, путь к CSS в HTML, отдельный запрос браузера, раздача статики при разработке и статус `200 OK` в Network. |
 | 03 | [Тег url: ссылка по имени маршрута](lesson_48_03_url_tag.excalidraw) | `name="post_list"` → `{% url 'post_list' %}` → ссылка на `/posts/`. Имя маршрута и его адрес — разные вещи. |
 
+## lesson_49
+
+### URL и конвертеры
+
+| № | Диаграмма | О чём |
+| --- | --- | --- |
+| 01 | [Адрес → аргумент view](lesson_49_01_dynamic_url.excalidraw) | Как `path("posts/<int:post_id>/", ...)` разбирает адрес `/posts/42/`: строка `42` превращается в `post_id=42` и попадает во view. Внизу — что даёт `404`, если формат не совпал. |
+| 02 | [Конвертеры: какой адрес подойдёт](lesson_49_02_converters.excalidraw) | `int`, `str`, `slug`, `uuid`, `path`: примеры, что каждый принимает и что не пропускает. Без базы данных — только разбор адреса. |
+
+### Наследование шаблонов
+
+Порядок просмотра: 03 → 04 → 05 → 06 → 07 → 08.
+
+| № | Диаграмма | О чём |
+| --- | --- | --- |
+| 03 | [base.html: скелет и блоки](lesson_49_03_base_blocks.excalidraw) | Что лежит в `base.html`: `head`, `nav`, `main`, `footer`, `scripts`. Блоки — именованные точки замены с содержимым по умолчанию. |
+| 04 | [extends: ребёнок заменяет блоки](lesson_49_04_extends_override.excalidraw) | Один `base.html` и два ребёнка: что наследуется, что заменяется и почему `{% extends %}` стоит первой строкой. |
+| 05 | [block.super: добавить, а не заменить](lesson_49_05_block_super.excalidraw) | Цепочка `base.html → section.html → page.html`: родительский слой плюс добавка. Отдельно — почему `{% super %}` не существует и как писать `{{ block.super }}`. |
+| 06 | [include: один файл — разные страницы](lesson_49_06_include_partial.excalidraw) | Один `blog/post_card_include.html` в цикле на странице блога и в личном кабинете. Разные списки (`posts`, `my_posts`), разные страницы — один partial. |
+| 07 | [partials: несколько шаблонов в одном файле](lesson_49_07_partials_view.excalidraw) | `{% partialdef %}` и `{% partial %}`: два именованных фрагмента в одном файле. View через `render(request, "blog/post_cards.html#name", ...)` отдаёт только один фрагмент. |
+| 08 | [include with: тот же пост, другое имя](lesson_49_08_include_with.excalidraw) | Сверху — текущий код: цикл в `post_list.html`, include без `with`, partial читает `post`. Внизу — пример переименования: цикл остаётся в родителе, `{% include ... with post_data=post %}`, partial читает `post_data`; `forloop.counter` даёт 1, 2, 3. |
+
+### Что когда использовать
+
+| Задача | Инструмент | Где смотреть |
+| --- | --- | --- |
+| Общий каркас страниц | `{% extends %}` + `{% block %}` | 03–04 |
+| Добавить к родительскому блоку | `{{ block.super }}` | 05 |
+| Вставить готовый кусок | `{% include %}` | 06–08 |
+| Передать в partial другое значение | `{% include ... with post_data=post %}` | 08 |
+| Несколько вариантов в одном файле | `{% partialdef %}` + `{% partial %}` | 07 |
+| Отдать только фрагмент | `render(request, "file.html#name", ...)` | 07 |
+
+`partialdef` и `#name` — нативные возможности Django 6.1, отдельный пакет не нужен. `#name` — имя partial, а не CSS-id и не Vue-компонент.
+
 ## Как называем файлы
 
 Формат: `lesson_<номер урока>_<порядок схемы>_<тема>.excalidraw`.
