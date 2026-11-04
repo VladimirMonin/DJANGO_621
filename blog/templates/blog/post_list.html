@@ -1,22 +1,11 @@
-{% comment %} Загрузили статику {% endcomment %}
+{% extends "blog/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }}</title>
-    {% comment %} Я прокидываю путь до статики от папки статика в Django приложении (как и с шаблонами во VIEWS) {% endcomment %}
-    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">
-</head>
-<body>
-    <main class="container">
-    <nav class="nav"><a href="{% url 'post_list' %}">Публикации</a></nav>
-    <h1>{{ page_title }}</h1>
-    <ul class="tags">
-        {% for category in categories %}<li>{{ category.name }}</li>{% endfor %}
-    </ul>
-    <section id="posts" class="post-list">
+{% block title %}
+Список публикаций
+{% endblock title %}
+
+{% block content %}
+<section id="posts" class="post-list">
         {% for post in posts %}
             <article class="post-card{% if post.rating == 3 %} post-card--featured{% endif %}">
                 {% comment %} 
@@ -25,7 +14,11 @@
                 потом путь к папке с картинками
                 а из переменной post.image мы получаем название файла картинки
                 {% endcomment %}
-                {% if post.image %}<img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}">{% else %}<p class="muted">Без иллюстрации</p>{% endif %}
+                {% if post.image %}
+                <img src="{% static 'blog/images/' %}{{ post.image }}" alt="{{ post.title }}">
+                {% else %}
+                <p class="muted">Без иллюстрации</p>
+                {% endif %}
                 <h2>{{ forloop.counter }}. {{ post.title }}</h2>
                 <p class="muted">{{ post.author }} · {{ post.category.name }}</p>
                 {% if post.description %}<p>{{ post.description }}</p>{% else %}<p class="muted">Описание пока не добавлено.</p>{% endif %}
@@ -35,6 +28,4 @@
             <p>Публикаций пока нет.</p>
         {% endfor %}
     </section>
-</main>
-</body>
-</html>
+{% endblock content %}

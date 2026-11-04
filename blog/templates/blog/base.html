@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Межпространственный блог{% endblock title %}</title>
+    {% comment %} Подключение общих стилей {% endcomment %}
+    <link rel="stylesheet" href="{% static 'blog/css/blog.css' %}">
+    {% block extrahead %}
+    {% comment %} Дополнительные стили для наследников {% endcomment %}
+    {% endblock extrahead %}
+</head>
+<body>
+    <main class="container">
+        <nav class="nav"><a href="{% url "post_list" %}">Все публикации</a></nav>
+        {% block content %}
+        {% comment %} Контент для наследников {% endcomment %}
+        {% endblock content %}
+    </main>
+</body>
+</html>
