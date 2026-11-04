@@ -14,12 +14,25 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path
 from blog import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("", views.index, name="home"),
     path("posts/", views.post_list, name="post_list"),
+    # Два маршрута - вероятно один останется?)
+    path("posts/<int:post_id>/", views.post_detail, name="post_detail"),
+    # path("posts/by-slug/<slug:post_slug>/", views.post_detail_by_slug, name="post_detail_by_slug"),
 ]
+
+"""
+Конвертеры в Django URL
+- <int:pk> - целое число
+- <str:username> - строка
+- <slug:slug> - строка, содержащая только буквы, цифры, подчеркивания или дефисы
+- <uuid:uuid> - UUID вроде '550e8400-e29b-41d4-a716-446655440000'
+- <path:path> - строка, представляющая путь, включая символы '/' вроде 'some/path/to/file'
+"""
