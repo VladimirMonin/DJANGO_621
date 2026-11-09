@@ -3,15 +3,7 @@
 {% block title %}Часы{% endblock title %}
 {% block content %}
     <h1>Виджет часов</h1>
-    <div class="toolbar">
-        <button type="button"
-        hx-get="{% url 'clock_fragment' %}"
-        hx-target="#clock"
-        hx-swap="innerHTML"
-        >Обновить время
-
-        </button>
-    </div>
+    <div class="toolbar"></div>
     <div id="clock" class="clock">
         {% comment %} Создаем частичный шаблон для часов
         inline объявляет его и рендерит (при использовании этого шаблона)
@@ -20,4 +12,9 @@
             <span>{{ now|time:"H:i:s" }}</span>
         {% endpartialdef %}
     </div>
+    <button type="button"
+            class="button"
+            hx-get="{% url 'clock_fragment' %}"
+            hx-target="#clock"
+            hx-swap="innerHTML">Обновить время</button>
 {% endblock content %}

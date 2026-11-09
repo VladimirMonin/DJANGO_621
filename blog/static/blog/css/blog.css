@@ -104,3 +104,8 @@ a {
   background: white;
   color: #586875;
 }
+
+.button.htmx-request {
+  opacity: 0.5;
+  cursor: wait;
+}

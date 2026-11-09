@@ -43,4 +43,6 @@ def clock_view(request):
 
 
 def clock_fragment(request):
+    import time
+    time.sleep(2)
     return render(request, "blog/clock.html#clock", {"now": timezone.localtime()})
