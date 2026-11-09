@@ -67,3 +67,40 @@ a {
 .muted {
   color: #586875;
 }
+
+/* === №50: кнопки, часы и пустое состояние. Добавить в КОНЕЦ blog.css === */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+.button {
+  padding: 8px 16px;
+  border: 1px solid #08795b;
+  border-radius: 8px;
+  background: #08795b;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+.button:hover {
+  background: #065f47;
+}
+.clock {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 4px solid #d8e1e7;
+  border-radius: 8px;
+  background: white;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.25rem;
+}
+.empty-state {
+  flex: 1 1 100%;
+  padding: 20px;
+  border: 1px dashed #d8e1e7;
+  border-radius: 12px;
+  background: white;
+  color: #586875;
+}
