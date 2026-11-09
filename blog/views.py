@@ -1,5 +1,5 @@
 from django.http import Http404
-
+from django.utils import timezone
 from django.shortcuts import render
 from django.http import HttpResponse
 from .data import CATEGORIES, POSTS
@@ -36,3 +36,11 @@ def post_detail(request, post_id=None, post_slug=None):
         else f"Пост с slug={post_slug} не найден"
     )
     raise Http404(404, error_message)
+
+
+def clock_view(request):
+    return render(request, "blog/clock.html", {"now": timezone.localtime()})
+
+
+def clock_fragment(request):
+    return render(request, "blog/clock.html#clock", {"now": timezone.localtime()})

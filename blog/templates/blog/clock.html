@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+{% block title %}Часы{% endblock title %}
+{% block content %}
+    <h1>Виджет часов</h1>
+    <div id="clock" class="clock">
+        {% comment %} Создаем частичный шаблон для часов
+        inline объявляет его и рендерит (при использовании этого шаблона)
+        {% endcomment %}
+        {% partialdef clock inline %}
+            <span>{{ now|time:"H:i:s" }}</span>
+        {% endpartialdef %}
+    </div>
+{% endblock content %}
