@@ -18,5 +18,10 @@
                 {% comment %} Контент для наследников {% endcomment %}
             {% endblock content %}
         </main>
+        {% comment %} Подключение общих скриптов {% endcomment %}
+        <script src="{% static 'blog/js/test.js' %}"></script>
+        {% block extrascript %}
+            {% comment %} Дополнительные скрипты для наследников {% endcomment %}
+        {% endblock extrascript %}
     </body>
 </html>
