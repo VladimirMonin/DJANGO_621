@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # ПОСЛЕ СЛУЖЕБНЫХ НО до ваших приложений, подключаем Django HTMX
+    'django_htmx',
     # ВАЖНО! Авторские Django APP регистрируются ПОСЛЕ служебных
     'blog',
 ]
@@ -53,6 +55,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # После CommonMiddleware подключаем Django HTMX Middleware
+    'django_htmx.middleware.HtmxMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
