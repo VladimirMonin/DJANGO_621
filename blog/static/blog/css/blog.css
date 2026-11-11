@@ -111,10 +111,58 @@ a {
 }
 
 .post-card {
-  transition: filter 0.2s ease, opacity 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
 }
 .post-card.htmx-request {
   filter: blur(4px);
   opacity: 0.6;
   pointer-events: none;
 }
+
+/* === №51: форма поиска. Добавить в КОНЕЦ blog.css === */
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  flex-wrap: wrap;
+}
+.search-form input[type="search"] {
+  padding: 8px 12px;
+  border: 1px solid #d8e1e7;
+  border-radius: 8px;
+  font: inherit;
+  min-width: 220px;
+}
+.search-form a {
+  color: #586875;
+}
+.search-cats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.search-cats label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.empty-state {
+  padding: 16px;
+  border: 1px dashed #d8e1e7;
+  border-radius: 8px;
+  background: #f6f8fa;
+  color: #586875;
+}
+.search-form .button {
+  margin-left: auto; /* кнопка «Найти» прижимается вправо, «Сбросить» рядом */
+}
+
+

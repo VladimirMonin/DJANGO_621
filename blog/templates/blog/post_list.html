@@ -4,6 +4,27 @@
     Список публикаций
 {% endblock title %}
 {% block content %}
+    <h1>Список публикаций</h1>
+    <form class="search-form" method="get" action="{% url 'post_list' %}">
+        <label for="search">Поиск по заголовку</label>
+        <input id="search" type="search" name="q" value="{{ q }}">
+        <fieldset class="search-cats">
+            <legend>Категория</legend>
+            <label>
+                <input type="radio" name="cat" value="" {% if not cat %}checked{% endif %}> Все категории
+            </label>
+            {% for category in categories %}
+                <label>
+                    <input type="radio"
+                           name="cat"
+                           value="{{ category.name }}"
+                           {% if cat == category.name %}checked{% endif %}> {{ category.name }}
+                </label>
+            {% endfor %}
+        </fieldset>
+        <button type="submit" class="button">Найти</button>
+        <a href="{% url 'post_list' %}">Сбросить</a>
+    </form>
     <section id="posts" class="post-list">
         {% for post in posts %}
             {% include "blog/post_card_include.html" %}
