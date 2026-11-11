@@ -44,5 +44,16 @@ def clock_view(request):
 
 def clock_fragment(request):
     import time
-    time.sleep(2)
+
+    # time.sleep(2)
     return render(request, "blog/clock.html#clock", {"now": timezone.localtime()})
+
+
+def post_card_fragment(request, post_slug):
+    import time
+    time.sleep(2)  # имитация долгой работы сервера
+    for post in POSTS:
+        if post["slug"] == post_slug and post["is_published"]:
+            context = {"post": post}
+            return render(request, "blog/post_card_include.html", context)
+    raise Http404(404, f"Пост с slug={post_slug} не найден")

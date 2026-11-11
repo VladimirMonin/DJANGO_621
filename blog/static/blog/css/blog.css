@@ -109,3 +109,12 @@ a {
   opacity: 0.5;
   cursor: wait;
 }
+
+.post-card {
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+.post-card.htmx-request {
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none;
+}

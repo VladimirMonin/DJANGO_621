@@ -1,6 +1,18 @@
 {% load static %}
 <article class="post-card{% if post.rating == 3 %} post-card--featured{% endif %}">
                 {% comment %} 
+                Встроим тут HTMX кнопку обовляющую содержание этой карточки
+                {% endcomment %}
+                <button type="button"
+                class="post-card__refresh"
+                hx-get="{% url 'post_card_fragment' post.slug %}"
+                hx-target="closest .post-card"
+                hx-swap="outerHTML"
+                hx-indicator="closest .post-card"
+                >
+                Обновить карточку
+                </button>
+                {% comment %} 
                 Как считается путь к картинке?
                 static - мы начинаем с папки статики
                 потом путь к папке с картинками
@@ -15,4 +27,4 @@
                 <p class="muted">{{ post.author }} · {{ post.category.name }}</p>
                 {% if post.description %}<p>{{ post.description }}</p>{% else %}<p class="muted">Описание пока не добавлено.</p>{% endif %}
                 <p>{% if post.rating == 3 %}Высокий рейтинг{% elif post.rating == 2 %}Есть интерес{% else %}Новая запись{% endif %}</p>
-            </article>
+</article>
