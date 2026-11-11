@@ -55,6 +55,24 @@
 
 `partialdef` и `#name` — нативные возможности Django 6.1, отдельный пакет не нужен. `#name` — имя partial, а не CSS-id и не Vue-компонент.
 
+## lesson_50
+
+### AJAX, частичные шаблоны и HTMX
+
+Порядок: 01 → 02 → 03 → 04 → 05.
+
+| № | Диаграмма | О чём |
+| --- | --- | --- |
+| 01 | [Одна карточка, один запрос, один фрагмент](lesson_50_01_ajax.excalidraw) | Учебная гипотеза: клик → `fetch()` → view → `#card` → подмена `outerHTML`. HTMX нет. |
+| 02 | [Один файл — два адреса — два ответа](lesson_50_02_partial_two_renders.excalidraw) | Реальный код: `/clock/` и `/clock/fragment/` → `clock_view` и `clock_fragment` → один `blog/clock.html`. Полная страница против `<span>`. Кнопка не нужна: фрагмент открывается вкладкой. |
+| 03 | [inline: объявил и сразу показал](lesson_50_03_partialdef_inline.excalidraw) | Слои `<html>` → `<div id="clock">` → `<span>`, что делает `partialdef inline`, почему фрагмент маленький. Ловушка: `#clock` в `render()` — имя partial, `hx-target="#clock"` — CSS-селектор. |
+| 04 | [Кнопка сама делает запрос и подмену](lesson_50_04_htmx_swap.excalidraw) | `{% htmx_script %}` в `base.html`, три атрибута `hx-*`, цепочка из пяти шагов, почему ответ `<span>` ложится в `innerHTML` и зачем `time.sleep(2)`. |
+| 05 | [Кто делает шаги: fetch против HTMX](lesson_50_05_fetch_vs_htmx.excalidraw) | Таблица сравнения 01 и реальных часов: меняются только шаги 1 и 6; view, partial и фрагмент одинаковы. |
+
+01 — гипотеза: `update_card_by_id`, `cards_page.html` и `fetch` в проекте нет. 02–05 построены на настоящем коде: `config/urls.py`, `blog/views.py`, `blog/templates/blog/clock.html`, `blog/templates/blog/base.html`.
+
+Точный ответ `/clock/fragment/` проверен изолированным рендером Django: `<span>12:35:01</span>` с отступами, без `<div>` и `<html>`.
+
 ## Как называем файлы
 
 Формат: `lesson_<номер урока>_<порядок схемы>_<тема>.excalidraw`.
