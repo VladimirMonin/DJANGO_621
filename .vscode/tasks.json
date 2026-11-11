@@ -1,0 +1,22 @@
+{
+  // Запуск Django БЕЗ отладчика — обычный процесс в терминале, как manage.py runserver.
+  // Ctrl+Shift+B запускает задачу по умолчанию. Остановить — Ctrl+C в терминале.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Django: runserver 8001 (без отладки)",
+      "type": "shell",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": ["manage.py", "runserver", "8001"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
