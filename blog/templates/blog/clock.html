@@ -16,5 +16,7 @@
             class="button"
             hx-get="{% url 'clock_fragment' %}"
             hx-target="#clock"
-            hx-swap="innerHTML">Обновить время</button>
+            hx-swap="innerHTML"
+            hx-trigger="every 1s"
+            >Обновить время</button>
 {% endblock content %}
