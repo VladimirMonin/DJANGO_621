@@ -1,0 +1,8 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<h1>Поисковый эксперимент</h1>
+
+<p>Метод: {{ query_method }}</p>
+<p>Путь: {{ query_path }}</p>
+<p>Запрос: {{ query_dict }}</p>
+{% endblock %}

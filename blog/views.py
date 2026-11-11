@@ -57,3 +57,16 @@ def post_card_fragment(request, post_slug):
             context = {"post": post}
             return render(request, "blog/post_card_include.html", context)
     raise Http404(404, f"Пост с slug={post_slug} не найден")
+
+
+def search_experiment(request):
+    query_method = request.method
+    query_dict = request.GET
+    query_path = request.path
+    
+    context = {
+        "query_method": query_method,
+        "query_dict": query_dict,
+        "query_path": query_path,
+    }
+    return render(request, "blog/search_experiment.html", context)

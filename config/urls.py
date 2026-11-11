@@ -33,6 +33,9 @@ urlpatterns = [
 
     # Маршрут для обновления ОДНОЙ карточки через AJAX HTMX
     path("posts/card/<slug:post_slug>/", views.post_card_fragment, name="post_card_fragment"),
+
+    # Маршрут эксперимент для поисковых запросов и работы с REQUEST.GET
+    path("search/", views.search_experiment, name="post_search"),
 ]
 
 """
