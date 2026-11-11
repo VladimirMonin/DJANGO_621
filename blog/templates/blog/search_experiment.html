@@ -1,8 +1,18 @@
 {% extends "blog/base.html" %}
 {% block content %}
-<h1>Поисковый эксперимент</h1>
-
-<p>Метод: {{ query_method }}</p>
-<p>Путь: {{ query_path }}</p>
-<p>Запрос: {{ query_dict }}</p>
+    <h1>Поисковый эксперимент</h1>
+    {% comment %} value="{{ q_value }}" {% endcomment %}
+    <form action="{% url 'post_search' %}" method="get">
+    <input type="text" placeholder="Введите q"  name="q" value="{{ q_value }}" />
+    <label for="kompot_yes">Да</label>
+    <input type="radio" name="kompot" value="yes" id="kompot_yes" {% if kompot_value == 'yes' %} checked {% endif %}>
+    <label for="kompot_no">Нет</label>
+    <input type="radio" name="kompot" value="no" id="kompot_no" {% if kompot_value == 'no' %} checked {% endif %}>
+        <button type="submit">Поиск</button>
+    </form>
+    <p>Метод: {{ query_method }}</p>
+    <p>Путь: {{ query_path }}</p>
+    <p>Запрос: {{ query_dict }}</p>d
+    <p>Значение q: {{ q_value }}</p>
+    <p>Компот: {{ kompot_value }}</p>
 {% endblock %}

@@ -63,10 +63,19 @@ def search_experiment(request):
     query_method = request.method
     query_dict = request.GET
     query_path = request.path
+
+    # Параметр q - поисковый запрос
+    query = query_dict.get("q", "")
+    kompot = query_dict.get("kompot", "нет компота")
     
     context = {
         "query_method": query_method,
         "query_dict": query_dict,
         "query_path": query_path,
+        "q_value": query,
+        "kompot_value": kompot,
+
     }
+
+    
     return render(request, "blog/search_experiment.html", context)
