@@ -165,13 +165,25 @@ a {
   margin-left: auto; /* кнопка «Найти» прижимается вправо, «Сбросить» рядом */
 }
 
-
 /* Блюр выдачи, пока HTMX обновляет блок */
 #results {
-  transition: filter 0.2s ease, opacity 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease;
 }
 #results.htmx-request {
   filter: blur(4px);
   opacity: 0.6;
   pointer-events: none;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  flex: 1 1 100%;
+}
+.pagination__current {
+  color: #586875;
 }

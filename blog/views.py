@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.http import HttpResponse
 from .data import CATEGORIES, POSTS
-
+from django.core.paginator import Paginator
 
 def index(request):
     return HttpResponse("<h1>Привет из Django 6.1!</h1>")
@@ -19,10 +19,21 @@ def post_list(request):
 
     if q:
         posts = [post for post in posts if q.lower() in post["title"].lower()]
+
+
+    # Получаем номер страницы из GET-параметров
+    page_number = request.GET.get("page", 1)
+
+    # Пагинация постов по 5 шт. на страницу
+    paginator = Paginator(posts, 5)
+
+    # Получаем объект страницы с постами
+    page_obj = paginator.get_page(page_number)
     
     
     context = {
-        "posts": posts,
+        "posts": page_obj.object_list,
+        "page_obj": page_obj,
         "categories": CATEGORIES,
         "page_title": "Межпространственный блог",
         "q": q,
