@@ -28,6 +28,10 @@ def post_list(request):
         "q": q,
         "cat": cat,
     }
+    if request.htmx:
+        import time
+        time.sleep(2)  # имитация долгой работы сервера
+        return render(request, "blog/post_list.html#results", context)
     return render(request, "blog/post_list.html", context)
 
 

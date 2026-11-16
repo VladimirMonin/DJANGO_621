@@ -5,7 +5,13 @@
 {% endblock title %}
 {% block content %}
     <h1>Список публикаций</h1>
-    <form class="search-form" method="get" action="{% url 'post_list' %}">
+    <form class="search-form" method="get" action="{% url 'post_list' %}"
+    hx-get="{% url 'post_list' %}"
+    hx-trigger="keyup changed delay:1000ms from:#search, from:input[name='cat']"
+    hx-target="#results"
+    hx-swap="innerHTML"
+    hx-indicator="#results"
+    >
         <label for="search">Поиск по заголовку</label>
         <input id="search" type="search" name="q" value="{{ q }}">
         <fieldset class="search-cats">
@@ -25,11 +31,13 @@
         <button type="submit" class="button">Найти</button>
         <a href="{% url 'post_list' %}">Сбросить</a>
     </form>
-    <section id="posts" class="post-list">
+    <section id="results" class="post-list">
+        {% partialdef results inline %}
         {% for post in posts %}
             {% include "blog/post_card_include.html" %}
         {% empty %}
             <p>Публикаций пока нет.</p>
         {% endfor %}
+        {% endpartialdef %}
     </section>
 {% endblock content %}
