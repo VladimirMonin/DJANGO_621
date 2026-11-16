@@ -1,3 +1,11 @@
+/* =========================================================
+   blog.css — стили блога
+   Разделы: база · навигация · лента · карточка · теги
+   кнопки и часы · пустое состояние · состояния HTMX
+   форма поиска · пагинация
+   ========================================================= */
+
+/* ---------- База ---------- */
 * {
   box-sizing: border-box;
 }
@@ -17,26 +25,48 @@ body {
 a {
   color: #08795b;
 }
-.nav,
-.post-list,
-.tags {
+.muted {
+  color: #586875;
+}
+
+/* ---------- Навигация по сайту ---------- */
+.nav {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
 }
+
+/* ---------- Лента публикаций ---------- */
+/* Сетка с auto-fill (не auto-fit!): пустые колонки остаются пустыми,
+   поэтому одна карточка в ряду не растягивается на всю ширину. */
 .post-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
   align-items: stretch;
 }
+.post-list > * {
+  min-width: 0;
+}
+
+/* ---------- Карточка ---------- */
 .post-card {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  flex: 1 1 280px;
   min-width: 0;
   padding: 20px;
   border: 1px solid #d8e1e7;
   border-radius: 12px;
   background: white;
+  box-shadow: 0 1px 3px rgba(36, 51, 64, 0.08);
+  transition:
+    filter 0.2s ease,
+    opacity 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.post-card:hover {
+  box-shadow: 0 4px 12px rgba(36, 51, 64, 0.12);
 }
 .post-card--featured {
   border-color: #08795b;
@@ -53,22 +83,41 @@ a {
   width: 100%;
   height: 180px;
   object-fit: contain;
+  border-radius: 8px;
+  background: #f6f8fa;
 }
+
+/* Кнопка «Обновить карточку» */
+.post-card__refresh {
+  padding: 6px 12px;
+  border: 1px solid #d8e1e7;
+  border-radius: 8px;
+  background: #f6f8fa;
+  color: #586875;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.post-card__refresh:hover {
+  border-color: #08795b;
+  color: #08795b;
+}
+
+/* ---------- Теги ---------- */
 .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   padding: 0;
   list-style: none;
-  gap: 8px;
 }
 .tags li {
   padding: 4px 10px;
   border-radius: 8px;
   background: #e4f0ea;
 }
-.muted {
-  color: #586875;
-}
 
-/* === №50: кнопки, часы и пустое состояние. Добавить в КОНЕЦ blog.css === */
+/* ---------- Кнопки, часы, пустое состояние ---------- */
 .toolbar {
   display: flex;
   align-items: center;
@@ -96,76 +145,28 @@ a {
   font-variant-numeric: tabular-nums;
   font-size: 1.25rem;
 }
-.empty-state {
-  flex: 1 1 100%;
-  padding: 20px;
-  border: 1px dashed #d8e1e7;
-  border-radius: 12px;
-  background: white;
-  color: #586875;
-}
-
-.button.htmx-request {
-  opacity: 0.5;
-  cursor: wait;
-}
-
-.post-card {
-  transition:
-    filter 0.2s ease,
-    opacity 0.2s ease;
-}
-.post-card.htmx-request {
-  filter: blur(4px);
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-/* === №51: форма поиска. Добавить в КОНЕЦ blog.css === */
-.search-form {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 16px;
-  flex-wrap: wrap;
-}
-.search-form input[type="search"] {
-  padding: 8px 12px;
-  border: 1px solid #d8e1e7;
-  border-radius: 8px;
-  font: inherit;
-  min-width: 220px;
-}
-.search-form a {
-  color: #586875;
-}
-.search-cats {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  border: 0;
-  padding: 0;
-  margin: 0;
-}
-.search-cats label {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-}
-.empty-state {
+/* Пустое состояние: с классом .empty-state или голым <p> внутри ленты */
+.empty-state,
+.post-list > p {
+  grid-column: 1 / -1;
   padding: 16px;
   border: 1px dashed #d8e1e7;
   border-radius: 8px;
   background: #f6f8fa;
   color: #586875;
 }
-.search-form .button {
-  margin-left: auto; /* кнопка «Найти» прижимается вправо, «Сбросить» рядом */
-}
 
-/* Блюр выдачи, пока HTMX обновляет блок */
+/* ---------- Состояния HTMX ---------- */
+/* Класс htmx-request HTMX вешает сам на время запроса */
+.button.htmx-request {
+  opacity: 0.5;
+  cursor: wait;
+}
+.post-card.htmx-request {
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none;
+}
 #results {
   transition:
     filter 0.2s ease,
@@ -177,13 +178,110 @@ a {
   pointer-events: none;
 }
 
-.pagination {
+/* ---------- Форма поиска ---------- */
+/* Панель в три ряда: подпись → строка с полем и действиями → категории. */
+.search-form {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+  align-items: center;
+  gap: 10px 12px;
+  padding: 20px;
+  margin: 0 0 20px;
+  border: 1px solid #d8e1e7;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(36, 51, 64, 0.08);
+}
+.search-form > label {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  font-size: 0.85rem;
+  color: #586875;
+}
+.search-form input[type="search"] {
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid #d8e1e7;
+  border-radius: 8px;
+  font: inherit;
+}
+.search-form input[type="search"]:focus {
+  border-color: #08795b;
+  outline: 3px solid #e4f0ea;
+}
+.search-form .button {
+  grid-column: 2;
+  grid-row: 2;
+}
+.search-form a {
+  color: #586875;
+}
+.search-form a:hover {
+  color: #08795b;
+}
+.search-form > a {
+  grid-column: 3;
+  grid-row: 2;
+}
+.search-cats {
+  grid-column: 1 / -1;
+  grid-row: 3;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin: 16px 0;
-  flex: 1 1 100%;
+  flex-wrap: wrap;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.search-cats legend {
+  font-size: 0.85rem;
+  color: #586875;
+}
+.search-cats label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid #d8e1e7;
+  border-radius: 999px;
+  background: #f6f8fa;
+  cursor: pointer;
+}
+.search-cats label:has(input:checked) {
+  border-color: #08795b;
+  background: #e4f0ea;
+  color: #08795b;
+}
+
+/* ---------- Пагинация ---------- */
+.pagination {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 24px 0 8px;
+}
+.pagination__link {
+  padding: 6px 14px;
+  border: 1px solid #d8e1e7;
+  border-radius: 999px;
+  background: white;
+  color: #08795b;
+  text-decoration: none;
+}
+.pagination__link:hover {
+  border-color: #08795b;
+  background: #e4f0ea;
 }
 .pagination__current {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #e4f0ea;
   color: #586875;
+  font-variant-numeric: tabular-nums;
 }
