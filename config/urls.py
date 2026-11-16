@@ -22,20 +22,24 @@ from blog import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="home"),
+
+    # Основной маршрут с блогом и поисками
     path("posts/", views.post_list, name="post_list"),
     # Два маршрута - вероятно один останется?)
     path("posts/<int:post_id>/", views.post_detail, name="post_detail"),
     path("posts/by-slug/<slug:post_slug>/", views.post_detail, name="post_detail_by_slug"),
 
-    # Эксперименты с часами
-    path("clock/", views.clock_view, name="clock"),
-    path("clock/fragment/", views.clock_fragment, name="clock_fragment"),
-
     # Маршрут для обновления ОДНОЙ карточки через AJAX HTMX
     path("posts/card/<slug:post_slug>/", views.post_card_fragment, name="post_card_fragment"),
+    
+    # Эксперименты с часами ПОД УДАЛЕНИЕ
+    # path("clock/", views.clock_view, name="clock"),
+    # path("clock/fragment/", views.clock_fragment, name="clock_fragment"),
 
-    # Маршрут эксперимент для поисковых запросов и работы с REQUEST.GET
-    path("search/", views.search_experiment, name="post_search"),
+   
+
+    # Маршрут эксперимент для поисковых запросов и работы с REQUEST.GET ПОД УДАЛЕНИЕ
+    # path("search/", views.search_experiment, name="post_search"),
 ]
 
 """
