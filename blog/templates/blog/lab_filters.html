@@ -1,0 +1,85 @@
+{% extends "blog/base.html" %}
+{% load blog_extras %}
+{% block title %}
+    Лабораторная. Фильтры DTL
+{% endblock title %}
+{% block content %}
+    <style>
+    /* Стили витрины намеренно живут здесь, а не в blog.css: эксперимент
+        не должен смешиваться со стилями блога. */
+    .lab-title { font-size: 1.8rem; margin: 1rem 0 .3rem; }
+    .lab-lead { color: #5a6b7b; margin: 0 0 1.2rem; max-width: 62rem; }
+    .lab-card { border: 1px solid #d8dee6; border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.1rem; background: #fff; }
+    .lab-card h3 { margin: 0 0 .3rem; font-size: 1.1rem; }
+    .lab-note { color: #5a6b7b; margin: 0 0 .7rem; max-width: 62rem; }
+    .lab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: .7rem; }
+    .lab-cell { border: 1px solid #e6ebf0; border-radius: 8px; padding: .55rem .7rem; background: #f7f9fb; }
+    .lab-code { display: block; white-space: pre-wrap; font-family: Consolas, monospace; font-size: .85rem; background: #1e2430; color: #d7e3f4; padding: .45rem .55rem; border-radius: 6px; overflow-x: auto; }
+    .lab-out { margin: .5rem 0 .25rem; font-size: 1.05rem; min-height: 1.4em; }
+    .lab-tag { font-size: .75rem; padding: .1rem .45rem; border-radius: 999px; background: #e4e9ef; color: #44515e; }
+    .lab-yes { background: #d9f2e0; color: #1c6b36; }
+    .lab-no { background: #fbdfdf; color: #8f2b2b; }
+    .lab-was { color: #8f2b2b; }
+    </style>
+    <h1 class="lab-title">Лабораторная. Фильтры DTL</h1>
+    <p class="lab-lead">
+        Одна страница — весь шаблонный язык. Над каждым результатом лежит код, который его
+        вывел. Данные — экспериментальный словарь <code>LAB</code> из <code>blog/views.py</code>:
+        к базе страница не обращается. Фильтр — это труба после переменной
+        (<code>значение|фильтр</code>), тег — команда в фигурных скобках с процентами
+        (<code>{% verbatim %}{% тег %}{% endverbatim %}</code>).
+    </p>
+    {% comment %} 1. Default - что показать если значения нет {% endcomment %}
+    <p>{{ lab.subtitle|default:"Без подзаголовка" }}</p>
+    <p>{{ lab.annotation|default:"Без аннотаций" }}</p>
+    {% comment %} default_if_none - реагирует только на None {% endcomment %}
+    <p>{{ lab.subtitle|default_if_none:"Без подзаголовка" }}</p>
+    <p>{{ lab.annotation|default_if_none:"Без аннотаций" }}</p>
+    {% comment %} Фильтр считающий кол-во символов в строке {% endcomment %}
+    <p>Длина заголовка: {{ lab.title|length }} символов</p>
+    {% comment %} Он показыает и кол-во элементов списка {% endcomment %}
+    <p>Кол-во тегов: {{ lab.tags|length }}</p>
+    {% comment %} Показыаем первые слова или буквы поста {% endcomment %}
+    <p>Первые 5 символов: {{ lab.title|truncatechars:5 }}</p>
+    <p>Первые 3 слова: {{ lab.title|truncatewords:3 }}</p>
+    {% comment %} Фильтр для форматирования даты {% endcomment %}
+    <p>{{ lab.published_at|date }}</p>
+    <p>{{ lab.published_at|date:"d.m.Y H:i" }}</p>
+    <p>{{ lab.published_at|date:"j F Y" }}</p>
+    <p>{{ lab.published_at|date:"l" }}</p>
+    {% comment %} JOIN - объединяет элементы списка в строку {% endcomment %}
+    <p>{{ lab.tags|join:", " }}</p>
+    {% comment %} 6. dictsort и dictsortreversed {% endcomment %}
+    <p>
+        {% for post in lab.posts_mini|dictsort:"rating" %}
+            {{ post.name }} — {{ post.rating }};
+        {% endfor %}
+    </p>
+    <p>
+        {% for post in lab.posts_mini|dictsortreversed:"rating" %}
+        {{ post.name }} — {{ post.rating }}; {% endfor %}</p>
+    {% comment %} 8. yesno
+    Да - нет - нет - не знаю 
+    {% endcomment %}
+    <p>{{ lab.is_published|yesno:"Да,Нет,Не знаю" }}</p>
+    <p>{{ lab.is_draft|yesno:"Да,Нет,Не знаю" }}</p>
+    <p>{{ lab.subtitle|yesno:"Да,Нет,Не знаю" }}</p>
+    <p>{{ lab.annotation|yesno:"Да,Нет,Не знаю" }}</p>
+    {% comment %} 
+    first - первый элемент
+    last - последний элемент
+    slice - срез списка
+    join - объединяет элементы списка в строку
+    length - длина строки или количество элементов в списке
+    {% endcomment %}
+    <p>Первый тег: {{ lab.tags|first }}</p>
+    <p>Последний тег: {{ lab.tags|last }}</p>
+    <p>Первые 2 тега: {{ lab.tags|slice:":2" }}</p>
+    <p>Первые 2 тега с join: {{ lab.tags|slice:":2"|join:", " }}</p>
+    {% comment %} Вывод рейтинга мини постов {% endcomment %}
+    <p>
+        {% for post in lab.posts_mini %}
+            {{ post.name }} — {{ post.rating|rating_lable|default:"👀" }};
+        {% endfor %}
+    </p>
+{% endblock content %}
